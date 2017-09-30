@@ -6,7 +6,7 @@ admin.autodiscover()
 import egghunt.views
 
 # Examples:
-# url(r'^$', 'easter17.views.home', name='home'),
+# url(r'^$', 'easteregg.views.home', name='home'),
 # url(r'^blog/', include('blog.urls')),
 
 urlpatterns = [

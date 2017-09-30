@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'easter17.urls'
+ROOT_URLCONF = 'easteregg.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'easter17.wsgi.application'
+WSGI_APPLICATION = 'easteregg.wsgi.application'
 
 
 # Database
