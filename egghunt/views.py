@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Egg, LeaderboardEntry
 from ipware.ip import get_ip
@@ -15,17 +16,23 @@ def top_index(request):
 
 
 def index(request):
-    n_levels = Egg.objects.latest('level').level
-    leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
-               for i in range(1,n_levels+1)]
+    try:
+        n_levels = Egg.objects.latest('level').level
+        leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
+                   for i in range(1,n_levels+1)]
+    except ObjectDoesNotExist:
+        leaders = []
     return render(request, 'egghunt/index.html', {'leaders': leaders})
 
 
 def leaderboard(request):
-    n_levels = Egg.objects.latest('level').level
-    leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
-               for i in range(1,n_levels+1)]
-    return render(request, 'egghunt/leaderboard.html', {'leaders': leaders})
+    try:
+        n_levels = Egg.objects.latest('level').level
+        leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
+                   for i in range(1,n_levels+1)]
+    except ObjectDoesNotExist:
+        leaders = []
+    return render(request, 'egghunt/index.html', {'leaders': leaders})
 
 
 def mapresult(request):
