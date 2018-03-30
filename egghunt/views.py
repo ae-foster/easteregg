@@ -32,7 +32,7 @@ def leaderboard(request):
                    for i in range(1,n_levels+1)]
     except ObjectDoesNotExist:
         leaders = []
-    return render(request, 'egghunt/index.html', {'leaders': leaders})
+    return render(request, 'egghunt/leaderboard.html', {'leaders': leaders})
 
 
 def mapresult(request):
