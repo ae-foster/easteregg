@@ -1,8 +1,9 @@
-# python-getting-started
+# eEaster Egg Hunt
 
-A barebones Python app, which can easily be deployed to Heroku.
-
-This application supports the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
+This repo supports the eEaster Egg Hunt run by me (Adam Foster), Tom Flynn, Matt John, Tim Foster
+ and others.
+ 
+The website is currently hosted at https://eeasteregg-staging.herokuapp.com/egghunt/
 
 ## Running Locally
 
