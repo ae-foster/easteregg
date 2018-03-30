@@ -5,7 +5,7 @@ psycopg2==2.7.1
 whitenoise==2.0.6
 geopy>=1.11.0
 django-ipware>=1.1.6
-django-storages==1.6.5
+git+https://github.com/jschneier/django-storages.git#egg=django-storages
 Pillow>=4.0.0
 dropbox>=8.2.0
 requests>=2.18.1
