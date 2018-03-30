@@ -17,14 +17,14 @@ def top_index(request):
 def index(request):
     n_levels = Egg.objects.latest('level').level
     leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
-               for i in range(n_levels)]
+               for i in range(1,n_levels+1)]
     return render(request, 'egghunt/index.html', {'leaders': leaders})
 
 
 def leaderboard(request):
     n_levels = Egg.objects.latest('level').level
     leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
-               for i in range(n_levels)]
+               for i in range(1,n_levels+1)]
     return render(request, 'egghunt/leaderboard.html', {'leaders': leaders})
 
 
