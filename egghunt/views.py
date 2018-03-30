@@ -8,24 +8,31 @@ from .models import Egg, LeaderboardEntry
 from ipware.ip import get_ip
 from random import randrange
 
+
 # Create your views here.
 def top_index(request):
     return HttpResponseRedirect('/egghunt/')
 
+
 def index(request):
-    topLeaders1 = LeaderboardEntry.objects.filter(level__exact=1).order_by('publicationDate')[:5]
-    topLeaders2 = LeaderboardEntry.objects.filter(level__exact=2).order_by('publicationDate')[:5]
-    return render(request, 'egghunt/index.html', {'leader1': topLeaders1, 'leader2': topLeaders2})
+    n_levels = Egg.objects.latest('level').level
+    leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
+               for i in range(n_levels)]
+    return render(request, 'egghunt/index.html', {'leaders': leaders})
+
 
 def leaderboard(request):
-    topLeaders1 = LeaderboardEntry.objects.filter(level__exact=1).order_by('publicationDate')
-    topLeaders2 = LeaderboardEntry.objects.filter(level__exact=2).order_by('publicationDate')
-    return render(request, 'egghunt/leaderboard.html', {'leader1': topLeaders1, 'leader2': topLeaders2})
+    n_levels = Egg.objects.latest('level').level
+    leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
+               for i in range(n_levels)]
+    return render(request, 'egghunt/leaderboard.html', {'leaders': leaders})
+
 
 def mapresult(request):
     lat = request.GET['latitude']
     lng = request.GET['longitude']
     return HttpResponseRedirect(reverse('clues', args=(lat, lng)))
+
 
 def start(request):
     return render(request, 'egghunt/start.html')
@@ -47,21 +54,28 @@ def clues(request, observerLatitude, observerLongitude, noLeader=False, formSubm
                 ip = get_ip(request)
                 if ip is None:
                     ip = randrange(0, 10000000)
-                newEntry = LeaderboardEntry(name=str(request.POST['name']), ipAddress = ip, publicationDate=timezone.now(), level=egg.levelJustEnded)
+                newEntry = LeaderboardEntry(name=str(request.POST['name']),
+                                            ipAddress=ip,
+                                            publicationDate=timezone.now(),
+                                            level=egg.levelJustEnded)
                 newEntry.save()
-                return HttpResponseRedirect(reverse('clues', args=(observerLatitude, observerLongitude)))
+                return HttpResponseRedirect(
+                    reverse('clues', args=(observerLatitude, observerLongitude)))
             else:
                 # Test the IP address of the requester
                 ip = get_ip(request)
                 if ip is not None:
                     # Check the IP
-                    if ip not in [entry.ipAddress for entry in LeaderboardEntry.objects.filter(level__exact=egg.levelJustEnded)]:
+                    if ip not in [entry.ipAddress for entry in LeaderboardEntry.objects.filter(
+                                  level__exact=egg.levelJustEnded)]:
                         canEnter=True
                     else:
                         canEnter=False
                 else:
                     canEnter=True
-                return render(request, 'egghunt/leaderboardEntry.html', {'egg': egg, 'canEnter': canEnter, 'olat': observerLatitude, 'olong': observerLongitude})
+                return render(request, 'egghunt/leaderboardEntry.html',
+                              {'egg': egg, 'canEnter': canEnter, 'olat': observerLatitude,
+                               'olong': observerLongitude})
         else:
             # This is 'normal' behaviour
             egg.visit()
@@ -70,5 +84,5 @@ def clues(request, observerLatitude, observerLongitude, noLeader=False, formSubm
         return render(request, 'egghunt/noegg.html', {})
     else:
         # We should never get here!
-        raise ValueError
+        raise ValueError("Within range of two or more eggs")
 

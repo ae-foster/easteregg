@@ -4,7 +4,7 @@
 
 		<!-- Banner -->
 			<section id="banner">
-				<h2>Treasure Hunt</h2>
+				<h2>eEaster Egg Hunt</h2>
 				<p>Follow a trail of clues around the world </p>
 				<ul class="actions">
 					<li><a href="{% url 'start' %}" class="button special big">Start</a></li>
@@ -21,20 +21,23 @@
 					</header>
 
 					<p>
-						Welcome to Tom's treasure hunt! The fiendish clues and late night deductions are here.
+						Welcome to the eEaster Egg Hunt 2018! This is it. Bigger, better, and more compelling than
+						before.
 					</p>
 
 				</div>
 			</section>
 
             <!-- Leaderboard -->
+			{% if leaders %}
 			<section id="leaderboard" class="wrapper style1">
 				<div class="container">
 					<header class="major special">
 						<h2>Leaderboard</h2>
 					</header>
-					<header><h3>Part 1</h3></header>
-					{% if leader1 %}
+					{% for leaderlist in leaders %}
+					<header><h3>Part {{ forloop.counter }}</h3></header>
+					{% if leaderlist %}
 					<div class="table-wrapper">
 							<table>
 								<thead>
@@ -45,8 +48,7 @@
 									</tr>
 								</thead>
 								<tbody>
-								{% for leader in leader1 %}
-
+								{% for leader in leaderlist %}
 									<tr>
 										<td>{{ forloop.counter }}</td>
 										<td>{{ leader.name }}</td>
@@ -55,40 +57,12 @@
 								{% endfor %}
 								</tbody>
 							</table>
-						</div>
+					</div>
 					{% else %}
 					No-one here yet
 					{% endif %}
-
-					<header><h3>Part 2</h3></header>
-					{% if leader2 %}
-
-					<div class="table-wrapper">
-							<table>
-								<thead>
-									<tr>
-										<th>Position</th>
-										<th>Name</th>
-										<th>Time</th>
-									</tr>
-								</thead>
-								<tbody>
-								{% for leader in leader2 %}
-
-									<tr>
-										<td>{{ forloop.counter }}</td>
-										<td>{{ leader.name }}</td>
-										<td>{{ leader.publicationDate }}</td>
-									</tr>
-								{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					{% else %}
-					No-one here yet
-					{% endif %}
-
+					{% endfor %}
 				</div>
 			</section>
-
+			{% endif %}
 {% endblock %}
