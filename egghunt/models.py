@@ -38,6 +38,13 @@ class Egg(models.Model):
         self.visits+=1
         self.save()
 
+class Downtime(models.Model):
+    start_hour = models.IntegerField()
+    start_min = models.IntegerField()
+    end_hour = models.IntegerField()
+    end_min = models.IntegerField()
+    in_use = models.BooleanField(default=False)
+
 
 def random_filename(instance, filename):
     _, extension = splitext(filename)

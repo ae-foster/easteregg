@@ -5,9 +5,10 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Egg, LeaderboardEntry
+from .models import Egg, LeaderboardEntry, Downtime
 from ipware.ip import get_ip
 from random import randrange
+from datetime import datetime
 
 
 # Create your views here.
@@ -44,9 +45,20 @@ def mapresult(request):
 def start(request):
     return render(request, 'egghunt/start.html')
 
+def check_downtime(downtimes=None):
+    cur_hour = datetime.time(datetime.now).hour
+    cur_min = datetime.time(datetime.now).minute
+    for downtime in downtimes:
+        if (60*downtime.start_hour + downtime.start_min < 60*cur_hour + cur_min ) and \
+                (60*downtime.end_hour + downtime.end_min > 60*cur_hour + cur_min ):
+            return 1
+    return 0
+
 
 def clues(request, observerLatitude, observerLongitude, noLeader=False, formSubmit=False):
     nearbyEggs = [egg for egg in Egg.objects.all() if egg.isClose(observerLatitude, observerLongitude)]
+    if check_downtime(Downtime.objects.all()):
+        return render(request, 'egghunt/nohunt.html', {})
     if len(nearbyEggs) == 1:
         egg = nearbyEggs[0]
         if egg.levelJustEnded:
