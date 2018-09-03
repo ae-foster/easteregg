@@ -45,6 +45,8 @@ class Downtime(models.Model):
     end_min = models.IntegerField()
     in_use = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.start_hour) + " / " + str(self.end_hour)
 
 def random_filename(instance, filename):
     _, extension = splitext(filename)
