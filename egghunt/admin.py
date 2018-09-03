@@ -18,6 +18,6 @@ admin.site.register(Egg, EggAdmin)
 
 
 class DownAdmin(admin.ModelAdmin):
-    inlines = [InlineImage]
+    pass
 
 admin.site.register(Downtime, DownAdmin)
