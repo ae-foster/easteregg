@@ -45,6 +45,7 @@ def mapresult(request):
 def start(request):
     return render(request, 'egghunt/start.html')
 
+
 def check_downtime(downtimes=None):
     cur_hour = datetime.time(datetime.now()).hour
     cur_min = datetime.time(datetime.now()).minute
