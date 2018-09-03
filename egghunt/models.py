@@ -6,10 +6,8 @@ from string import digits, ascii_uppercase
 from os.path import splitext
 from storages.backends.dropbox import DropBoxStorage
 
-from django.conf import settings
-
-
-print(settings.DROPBOX_OAUTH2_TOKEN)
+# from django.conf import settings
+# print(settings.DROPBOX_OAUTH2_TOKEN)
 STORAGE = DropBoxStorage()
 
 
@@ -38,6 +36,7 @@ class Egg(models.Model):
         self.visits+=1
         self.save()
 
+
 class Downtime(models.Model):
     start_hour = models.IntegerField()
     start_min = models.IntegerField()
@@ -47,6 +46,7 @@ class Downtime(models.Model):
 
     def __str__(self):
         return str(self.start_hour) + " / " + str(self.end_hour)
+
 
 def random_filename(instance, filename):
     _, extension = splitext(filename)
