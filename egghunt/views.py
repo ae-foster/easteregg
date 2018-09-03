@@ -46,8 +46,8 @@ def start(request):
     return render(request, 'egghunt/start.html')
 
 def check_downtime(downtimes=None):
-    cur_hour = datetime.time(datetime.now).hour
-    cur_min = datetime.time(datetime.now).minute
+    cur_hour = datetime.time(datetime.now()).hour
+    cur_min = datetime.time(datetime.now()).minute
     for downtime in downtimes:
         if (60*downtime.start_hour + downtime.start_min < 60*cur_hour + cur_min ) and \
                 (60*downtime.end_hour + downtime.end_min > 60*cur_hour + cur_min ) and \
