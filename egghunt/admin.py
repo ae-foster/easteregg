@@ -16,8 +16,4 @@ class EggAdmin(admin.ModelAdmin):
 
 admin.site.register(Egg, EggAdmin)
 
-
-class DownAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(Downtime, DownAdmin)
+admin.site.register(Downtime)
