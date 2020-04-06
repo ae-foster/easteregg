@@ -4,5 +4,6 @@
   "image": "heroku/python",
   "repository": "https://github.com/ae-foster/easteregg",
   "keywords": ["python", "django", "easter"],
-  "addons": [ "heroku-postgresql" ]
+  "addons": [ "heroku-postgresql" ],
+  "stack": "heroku-18"
 }
