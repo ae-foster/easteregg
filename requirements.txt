@@ -1,7 +1,7 @@
 dj-database-url==0.4.1
 Django==1.11.28
 gunicorn==19.6.0
-psycopg2==2.7.1
+psycopg2==2.7.3.2
 whitenoise==2.0.6
 geopy>=1.11.0
 django-ipware>=1.1.6
