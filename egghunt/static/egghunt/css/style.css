@@ -30,7 +30,7 @@
 	body, input, select, textarea {
 		color: #666;
 		font-family: "Raleway", Arial, Helvetica, sans-serif;
-		font-size: 22pt;
+		font-size: 16pt;
 		font-weight: 400;
 		line-height: 2em;
 	}
@@ -309,6 +309,10 @@
 	input[type="email"],
 	select {
 		height: 2.75em;
+	}
+
+	.big-caps {
+	    text-transform: uppercase;
 	}
 
 	textarea {

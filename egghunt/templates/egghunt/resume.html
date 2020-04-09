@@ -1,7 +1,30 @@
 {% extends "egghunt/white.html" %}
+{% load staticfiles %}
 {% block title %}Resume{% endblock %}
 {% block main %}
 			<!-- Resume -->
-            Resume here
+            <section id="resume" class="wrapper style1">
+                <div class="container">
+                    <header class="major special">
+						<h2>Resume</h2>
+					</header>
+                    <span class="image fit"><img src="{% static 'egghunt/images/Borneo.jpg' %}" alt="Sunrise in Borneo" /></span>
+                    <p>
+                    Enter the answer to the clue you solved most recently
+                    </p>
+                    <form method="get" action="{% url 'clues' %}">
+                        <div class="row uniform">
+                            <div class="12u 12u$(xsmall)">
+                                <input class="big-caps" type="text" name="answer" id="answer" value="" placeholder="Answer" />
+                            </div>
+                            <div class="12u$ align-center">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Submit" class="special" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
 
 {% endblock %}
