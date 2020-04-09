@@ -54,7 +54,7 @@ def random_filename(instance, filename):
 
 
 class Image(models.Model):
-    egg = models.ForeignKey(Egg)
+    egg = models.ForeignKey(Egg, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=random_filename, storage=STORAGE)
 
 

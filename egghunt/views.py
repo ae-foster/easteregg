@@ -46,6 +46,10 @@ def start(request):
     return render(request, 'egghunt/start.html')
 
 
+def resume(request):
+    return render(request, 'egghunt/resume.html')
+
+
 def check_downtime(downtimes=None):
     cur_hour = datetime.time(datetime.now()).hour
     cur_min = datetime.time(datetime.now()).minute

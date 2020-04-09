@@ -9,7 +9,7 @@
 			</section>
 
 		<!-- Welcome -->
-			<section id="welcome" class="wrapper style2 special">
+			<section id="welcome" class="wrapper style1">
 				<div class="container">
 					<header class="major special">
 						<h2>Welcome</h2>
@@ -18,11 +18,49 @@
 					<p>
 						The eEaster Egg Hunt returns for 2020! This year's hunt takes you to the mythical continent
 						of <em>Pazira</em> where you embark on a quest to find the cure to a life-threatening
-						disease by solving riddles, translating hieroglyphics and using your wits in a range
-						of challenging puzzles. Happy Easter!
+						disease by solving riddles, translating hieroglyphics and using your wits. Happy Easter!
 					</p>
-					<span class="image fit"><img src="{% static 'egghunt/images/paragraph_separator.gif' %}" alt="" /></span>
+					<img src="{% static 'egghunt/images/paragraph_separator.gif' %}" alt="" class="paragraph-end" />
 
+				</div>
+			</section>
+
+		<!-- Welcome -->
+			<section id="howto" class="wrapper style2">
+				<div class="container">
+					<header class="major special">
+						<h2>How to play</h2>
+					</header>
+					<span class="image fit"><img src="{% static 'egghunt/images/idaho_winter_road.jpg' %}" alt="An Idaho road in Winter" /></span>
+                    <p>
+                        The eEasterEgg Hunt works like any other.
+                        You start with a clue.
+                        By solving the clue, you can continue the story, until you reach the next clue.
+                    </p>
+					<h3>Solving the clues</h3>
+                    <p>
+                        The clues can be <em>difficult</em> and you're not expected to "just know it".
+                        A little persistence will be needed!
+						Unlike previous versions of the eEaster Egg hunt, the answers to this year's clues are in
+						the form of text.
+                        For every clue, your answer needs to exactly match one of the accepted answers.
+                        If you think you have the right answer but it is not accepted, try rephrasing or respelling
+						your answer.
+                    </p>
+                    <h3>Resuming</h3>
+                    <p>
+                        You can pause and resume the hunt at any time. Just remember the solution to the last puzzle you
+						solved. When you want to resume, enter that answer on the <a href="{% url 'resume' %}">resume page</a> .
+                    </p>
+					<h3>Backpack</h3>
+					<p>
+						You have a backpack that collects useful items from your quest so far. It may come in handy
+						when you least expect it.
+					</p>
+					<h3>Ready?</h3>
+					<p class="align-center">
+						<a href="{% url 'start' %}" class="button special big">Click here to Begin</a>
+					</p>
 				</div>
 			</section>
 
