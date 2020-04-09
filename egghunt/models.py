@@ -1,6 +1,5 @@
 from django.db import models
 
-from geopy.distance import vincenty
 from random import choice
 from string import digits, ascii_uppercase
 from os.path import splitext
@@ -14,8 +13,7 @@ STORAGE = DropBoxStorage()
 class Egg(models.Model):
     sequenceNumber = models.IntegerField()
     locationName = models.CharField(max_length=255)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    answer = models.CharField(max_length=511)
     radius_in_metres = models.FloatField()
     textClue = models.TextField(blank=True)
     visits = models.IntegerField(default=0)
@@ -26,11 +24,10 @@ class Egg(models.Model):
     def __str__(self):
         return str(self.level) + " / " + str(self.sequenceNumber)+". "+str(self.locationName)
 
-    def isClose(self, observerLatitude, observerLongitude):
-        # Use the awesome module from Python - no more actual formulae!
-        egg = (self.latitude, self.longitude)
-        hunter = (observerLatitude, observerLongitude)
-        return vincenty(egg, hunter).meters <= self.radius_in_metres
+    def match(self, guess):
+        guess = guess.upper()
+        allowedAnswers = self.answer.split('|')
+        return guess in allowedAnswers
 
     def visit(self):
         self.visits+=1

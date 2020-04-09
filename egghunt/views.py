@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import CharField, ValidationError
 
 from .models import Egg, LeaderboardEntry, Downtime
 from ipware.ip import get_ip
@@ -61,10 +62,18 @@ def check_downtime(downtimes=None):
     return 0
 
 
-def clues(request, observerLatitude, observerLongitude, noLeader=False, formSubmit=False):
-    nearbyEggs = [egg for egg in Egg.objects.all() if egg.isClose(observerLatitude, observerLongitude)]
+def clues(request, noLeader=False, formSubmit=False):
+    # The game is paused during any active downtime
     if check_downtime(Downtime.objects.all()):
         return render(request, 'egghunt/nohunt.html', {})
+    # The data is now sent as part of the GET data
+    guess = request.GET['answer']
+    field = CharField()
+    try:
+        guess = field.clean(guess)
+        nearbyEggs = [egg for egg in Egg.objects.all() if egg.match(guess)]
+    except ValidationError:
+        return render(request, 'egghunt/noegg.html', {})
     if len(nearbyEggs) == 1:
         egg = nearbyEggs[0]
         if egg.levelJustEnded:
@@ -99,8 +108,7 @@ def clues(request, observerLatitude, observerLongitude, noLeader=False, formSubm
                 else:
                     canEnter=True
                 return render(request, 'egghunt/leaderboardEntry.html',
-                              {'egg': egg, 'canEnter': canEnter, 'olat': observerLatitude,
-                               'olong': observerLongitude})
+                              {'egg': egg, 'canEnter': canEnter, 'answer': guess})
         else:
             # This is 'normal' behaviour
             egg.visit()
@@ -109,5 +117,4 @@ def clues(request, observerLatitude, observerLongitude, noLeader=False, formSubm
         return render(request, 'egghunt/noegg.html', {})
     else:
         # We should never get here!
-        raise ValueError("Within range of two or more eggs")
-
+        raise ValueError("Matched two or more eggs")
