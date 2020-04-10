@@ -1,2 +1,2 @@
-release: python manage.py migrate --fake egghunt 0003
+release: python manage.py migrate
 web: gunicorn easteregg.wsgi --log-file -
