@@ -1,2 +1,2 @@
-release: python manage.py migrate --fake-initial
+release: python manage.py migrate
 web: gunicorn easteregg.wsgi --log-file -
