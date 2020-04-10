@@ -13,29 +13,34 @@
                         </header>
 
                         <div class="container">
+                            {% for image in imgsBefore %}
+                            <div class="half-wrapper"><span class="image fit"><img src="{{ image.image.url }}" alt="" /></span></div>
+                            {% endfor %}
                             <p>
                                 {{ egg.textClue | safe }}
                             </p>
-                            <div class="row 50% uniform">
-								{% for image in egg.image_set.all %}
-                                <div class="12u$"><span class="image fit"><img src="{{ image.image.url }}" alt="" /></span></div>
-                                {% endfor %}
-
-                            </div>
+                            {% for image in imgsAfter %}
+                            <div class="half-wrapper"><span class="image fit"><img src="{{ image.image.url }}" alt="" /></span></div>
+                            {% endfor %}
                         </div>
 
-				</section>
 
 
-
-
-            <!-- Back to map -->
-				<section id="backtomap" class="wrapper style1 special">
+            <!-- Search bar -->
 					<div class="container">
 
-						<ul class="actions">
-							<li><a href="{% url 'map' %}" class="button special big">Back to the map</a></li>
-						</ul>
+						<form method="get" action="{% url 'clues' %}">
+                        <div class="row uniform">
+                            <div class="12u 12u$(xsmall)">
+                                <input class="big-caps" type="text" name="answer" id="answer" value="" placeholder="Answer" />
+                            </div>
+                            <div class="12u$ align-center">
+                                <ul class="actions">
+                                    <li><input type="submit" value="Guess" class="special" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
 					</div>
 				</section>
 

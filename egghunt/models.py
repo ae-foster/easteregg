@@ -13,8 +13,6 @@ STORAGE = DropBoxStorage()
 class Egg(models.Model):
     sequenceNumber = models.IntegerField()
     locationName = models.CharField(max_length=255)
-    answer = models.CharField(max_length=511)
-    radius_in_metres = models.FloatField()
     textClue = models.TextField(blank=True)
     visits = models.IntegerField(default=0)
     level = models.IntegerField(default=1)
@@ -24,13 +22,8 @@ class Egg(models.Model):
     def __str__(self):
         return str(self.level) + " / " + str(self.sequenceNumber)+". "+str(self.locationName)
 
-    def match(self, guess):
-        guess = guess.upper()
-        allowedAnswers = self.answer.split('|')
-        return guess in allowedAnswers
-
     def visit(self):
-        self.visits+=1
+        self.visits += 1
         self.save()
 
 
@@ -53,6 +46,12 @@ def random_filename(instance, filename):
 class Image(models.Model):
     egg = models.ForeignKey(Egg, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=random_filename, storage=STORAGE)
+    placement = models.CharField(max_length=10, choices=[('before', 'Before'), ('after', 'After')])
+
+
+class Answer(models.Model):
+    egg = models.ForeignKey(Egg, on_delete=models.CASCADE)
+    answer = models.CharField(max_length=511, primary_key=True)
 
 
 class LeaderboardEntry(models.Model):

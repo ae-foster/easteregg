@@ -6,10 +6,11 @@ from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import CharField, ValidationError
 
-from .models import Egg, LeaderboardEntry, Downtime
+from .models import Egg, LeaderboardEntry, Downtime, Answer
 from ipware.ip import get_ip
 from random import randrange
 from datetime import datetime
+import hashlib
 
 
 # Create your views here.
@@ -37,21 +38,11 @@ def leaderboard(request):
     return render(request, 'egghunt/leaderboard.html', {'leaders': leaders})
 
 
-def mapresult(request):
-    lat = request.GET['latitude']
-    lng = request.GET['longitude']
-    return HttpResponseRedirect(reverse('clues', args=(lat, lng)))
-
-
-def start(request):
-    return render(request, 'egghunt/start.html')
-
-
 def resume(request):
     return render(request, 'egghunt/resume.html')
 
 
-def check_downtime(downtimes=None):
+def checkDowntime(downtimes=None):
     cur_hour = datetime.time(datetime.now()).hour
     cur_min = datetime.time(datetime.now()).minute
     for downtime in downtimes:
@@ -62,59 +53,82 @@ def check_downtime(downtimes=None):
     return 0
 
 
-def clues(request, noLeader=False, formSubmit=False):
+def checkIpAddressHash(ip, level):
+    if ip is not None:
+        # Check the has of the IP
+        sha_1 = hashlib.sha1()
+        sha_1.update(ip.encode('utf8'))
+        if sha_1.hexdigest() not in [
+            entry.ipAddress for entry in LeaderboardEntry.objects.filter(level__exact=level)
+        ]:
+            canEnter = True
+        else:
+            canEnter = False
+    else:
+        canEnter = True
+    return canEnter
+
+
+def makeIpAddressHash(ip):
+    if ip is None:
+        ip = str(randrange(0, 10000000))
+    sha_1 = hashlib.sha1()
+    sha_1.update(ip.encode('utf8'))
+    return sha_1.hexdigest()
+
+
+def visitEgg(request, egg):
+    egg.visit()
+    imgsBefore = egg.image_set.filter(placement__exact='before')
+    imgsAfter = egg.image_set.filter(placement__exact='after')
+    return render(request, 'egghunt/clues.html', {'egg': egg, 'imgsBefore': imgsBefore, 'imgsAfter': imgsAfter})
+
+
+def clues(request, guess=None, noLeader=False, formSubmit=False):
     # The game is paused during any active downtime
-    if check_downtime(Downtime.objects.all()):
+    if checkDowntime(Downtime.objects.all()):
         return render(request, 'egghunt/nohunt.html', {})
     # The data is now sent as part of the GET data
-    guess = request.GET['answer']
+    if guess is None:
+        guess = request.GET['answer']
     field = CharField()
     try:
-        guess = field.clean(guess)
-        nearbyEggs = [egg for egg in Egg.objects.all() if egg.match(guess)]
+        guess = field.clean(guess).upper()
+        matchedAnswers = Answer.objects.filter(answer__iexact=guess)
+        # nearbyEggs = [egg for egg in Egg.objects.all() if egg.match(guess)]
     except ValidationError:
         return render(request, 'egghunt/noegg.html', {})
-    if len(nearbyEggs) == 1:
-        egg = nearbyEggs[0]
+    if len(matchedAnswers) == 1:
+        egg = matchedAnswers[0].egg
         if egg.levelJustEnded:
             # You've completed your level
             if noLeader:
                 if egg.finalEnd:
                     return HttpResponseRedirect(reverse('index'))
                 else:
-                    egg.visit()
-                    return render(request, 'egghunt/clues.html', {'egg': egg})
+                    return visitEgg(request, egg)
             elif formSubmit:
                 ip = get_ip(request)
-                if ip is None:
-                    ip = randrange(0, 10000000)
-                newEntry = LeaderboardEntry(name=str(request.POST['name']),
-                                            ipAddress=ip,
-                                            publicationDate=timezone.now(),
-                                            level=egg.levelJustEnded)
-                newEntry.save()
-                return HttpResponseRedirect(
-                    reverse('clues', args=(observerLatitude, observerLongitude)))
+                canEnter = checkIpAddressHash(ip, level=egg.levelJustEnded)
+                if canEnter:
+                    ipHash = makeIpAddressHash(ip)
+                    newEntry = LeaderboardEntry(name=str(request.POST['name']),
+                                                ipAddress=ipHash,
+                                                publicationDate=timezone.now(),
+                                                level=egg.levelJustEnded)
+                    newEntry.save()
+                return clues(request, guess=guess)
             else:
                 # Test the IP address of the requester
                 ip = get_ip(request)
-                if ip is not None:
-                    # Check the IP
-                    if ip not in [entry.ipAddress for entry in LeaderboardEntry.objects.filter(
-                                  level__exact=egg.levelJustEnded)]:
-                        canEnter=True
-                    else:
-                        canEnter=False
-                else:
-                    canEnter=True
+                canEnter = checkIpAddressHash(ip, level=egg.levelJustEnded)
                 return render(request, 'egghunt/leaderboardEntry.html',
                               {'egg': egg, 'canEnter': canEnter, 'answer': guess})
         else:
             # This is 'normal' behaviour
-            egg.visit()
-            return render(request, 'egghunt/clues.html', {'egg': egg})
-    elif len(nearbyEggs) == 0:
+            return visitEgg(request, egg)
+    elif len(matchedAnswers) == 0:
         return render(request, 'egghunt/noegg.html', {})
     else:
         # We should never get here!
-        raise ValueError("Matched two or more eggs")
+        raise ValueError("Matched two or more answers")

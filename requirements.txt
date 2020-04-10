@@ -8,4 +8,5 @@ django-ipware>=1.1.6
 git+https://github.com/jschneier/django-storages.git#egg=django-storages
 Pillow>=4.0.0
 dropbox>=8.2.0
-requests>=2.18.1
+requests>=2.18.1]
+six>=1.12.0

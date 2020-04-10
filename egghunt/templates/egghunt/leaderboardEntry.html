@@ -20,7 +20,7 @@
 
                 <div class="wrapper container">
                     <h3>Enter the leaderboard</h3>
-                    <form method="post" action="{% url 'cluesSubmit' olat olong 'submit' %}">
+                    <form method="post" action="{% url 'cluesSubmit' answer 'submit' %}">
                         {% csrf_token %}
                         <div class="row uniform">
                             <div class="6u 12u$(xsmall)">
@@ -32,7 +32,7 @@
                                     {% if egg.finalEnd %}
                                     <li><a href="{% url 'index' %}" class="button special">Home</a></li>
                                     {% else %}
-                                    <li><a href="{% url 'cluesToClue' olat olong 'toclue' %}" class="button special">Skip</a></li>
+                                    <li><a href="{% url 'cluesToClue' answer 'toclue' %}" class="button special">Skip</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -55,7 +55,7 @@
                         <p>You've been recorded on the leaderboard</p>
 						<ul class="actions">
                             {% if not egg.finalEnd %}
-                            <li><a href="{% url 'cluesToClue' olat olong 'toclue' %}" class="button special">Continue to Part {{ egg.level }}</a></li>
+                            <li><a href="{% url 'cluesToClue' answer 'toclue' %}" class="button special">Continue to Part {{ egg.level }}</a></li>
                             {% endif %}
                             <li><a href="{% url 'leaderboard' %}" class="button special">Leaderboard</a></li>
                             <li><a href="{% url 'index' %}" class="button special">Home</a></li>
