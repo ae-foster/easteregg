@@ -81,7 +81,9 @@ def visitEgg(request, egg):
     egg.visit()
     imgsBefore = egg.image_set.filter(placement__exact='before')
     imgsAfter = egg.image_set.filter(placement__exact='after')
-    return render(request, 'egghunt/clues.html', {'egg': egg, 'imgsBefore': imgsBefore, 'imgsAfter': imgsAfter})
+    daysLeft = 21 - (egg.sequenceNumber + 10 * (egg.level - 1))
+    return render(request, 'egghunt/clues.html', {'egg': egg, 'imgsBefore': imgsBefore, 'imgsAfter': imgsAfter,
+                                                  'daysLeft': daysLeft})
 
 
 def clues(request, guess=None, noLeader=False, formSubmit=False):

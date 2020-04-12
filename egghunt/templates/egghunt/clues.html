@@ -9,16 +9,14 @@
 
                         <header class="major special">
                             <h2>{{ egg.locationName }}</h2>
-                            <p>Part {{ egg.level }} Clue {{ egg.sequenceNumber }}</p>
+                            <p>Part {{ egg.level }} Clue {{ egg.sequenceNumber }} {{ daysLeft }} days left to live</p>
                         </header>
 
                         <div class="container">
                             {% for image in imgsBefore %}
                             <div class="half-wrapper"><span class="image fit"><img src="{{ image.image.url }}" alt="" /></span></div>
                             {% endfor %}
-                            <p>
-                                {{ egg.textClue | safe }}
-                            </p>
+                            {{ egg.textClue | safe }}
                             {% for image in imgsAfter %}
                             <div class="half-wrapper"><span class="image fit"><img src="{{ image.image.url }}" alt="" /></span></div>
                             {% endfor %}
