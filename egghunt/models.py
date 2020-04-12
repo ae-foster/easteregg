@@ -14,7 +14,7 @@ class Egg(models.Model):
     sequenceNumber = models.IntegerField()
     locationName = models.CharField(max_length=255)
     textClue = models.TextField(blank=True)
-    textClueAfer = models.TextField(blank=True)
+    textClueAfter = models.TextField(blank=True)
     visits = models.IntegerField(default=0)
     level = models.IntegerField(default=1)
     levelJustEnded = models.IntegerField(default=None, blank=True, null=True)
