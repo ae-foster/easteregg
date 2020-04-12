@@ -28,7 +28,9 @@
 
             <!-- Search bar -->
 					<div class="container">
-
+                        <p>
+                            {{ egg.textClueAfter | safe }}
+                        </p>
 						<form method="get" action="{% url 'clues' %}">
                         <div class="row uniform">
                             <div class="12u 12u$(xsmall)">
