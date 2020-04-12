@@ -79,8 +79,8 @@ def makeIpAddressHash(ip):
 
 def visitEgg(request, egg):
     egg.visit()
-    imgsBefore = egg.image_set.filter(placement__exact='before')
-    imgsAfter = egg.image_set.filter(placement__exact='after')
+    imgsBefore = egg.image_set.filter(placement__exact='before').order_by('page')
+    imgsAfter = egg.image_set.filter(placement__exact='after').order_by('page')
     daysLeft = 21 - (egg.sequenceNumber + 10 * (egg.level - 1))
     return render(request, 'egghunt/clues.html', {'egg': egg, 'imgsBefore': imgsBefore, 'imgsAfter': imgsAfter,
                                                   'daysLeft': daysLeft})

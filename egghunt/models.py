@@ -48,6 +48,7 @@ class Image(models.Model):
     egg = models.ForeignKey(Egg, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=random_filename, storage=STORAGE)
     placement = models.CharField(max_length=10, choices=[('before', 'Before'), ('after', 'After')])
+    page = models.IntegerField(default=1, null=False)
 
 
 class Answer(models.Model):
