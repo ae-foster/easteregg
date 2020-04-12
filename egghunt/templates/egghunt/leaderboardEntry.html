@@ -9,6 +9,9 @@
                 <header class="major special">
                             <h2>Congratulations</h2>
                             <p>Completed Part {{ egg.levelJustEnded }}</p>
+                </header>
+
+                <div class="container">
                     {% if egg.finalEnd %}
                         <p>Congratulations. You mount the stairs to exit the tomb and emerge close to the nymph statue,
                             your horses waiting patiently where you left them. You mount your own, tying Charlie’s
@@ -19,9 +22,6 @@
                             colour returning to his cheeks, and strength returning to his body. You have succeeded,
                             and it is time to go home.</p>
                         {% endif %}
-                </header>
-
-                <div class="container">
                 <div class="row 50% uniform">
                     <div class="12u$"><span class="image fit"><img src="{% static 'egghunt/images/Treasure-Map.jpg' %}" alt="" /></span></div>
                 </div>
@@ -58,6 +58,10 @@
                     <header class="major special">
                             <h2>Congratulations</h2>
                             <p>Completed Part {{ egg.levelJustEnded }}</p>
+                    </header>
+
+
+                    <div class="container special">
                         {% if egg.finalEnd %}
                         <p>Congratulations. You mount the stairs to exit the tomb and emerge close to the nymph statue,
                             your horses waiting patiently where you left them. You mount your own, tying Charlie’s
@@ -68,10 +72,6 @@
                             colour returning to his cheeks, and strength returning to his body. You have succeeded,
                             and it is time to go home.</p>
                         {% endif %}
-                    </header>
-
-
-                    <div class="container special">
                         <p>You've been recorded on the leaderboard</p>
 						<ul class="actions">
                             {% if not egg.finalEnd %}
