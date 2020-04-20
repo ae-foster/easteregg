@@ -21,7 +21,7 @@ def top_index(request):
 def index(request):
     try:
         n_levels = Egg.objects.latest('level').level
-        leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
+        leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:20]
                    for i in range(1,n_levels+1)]
     except ObjectDoesNotExist:
         leaders = []
@@ -31,7 +31,7 @@ def index(request):
 def leaderboard(request):
     try:
         n_levels = Egg.objects.latest('level').level
-        leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:25]
+        leaders = [LeaderboardEntry.objects.filter(level__exact=i).order_by('publicationDate')[:400]
                    for i in range(1,n_levels+1)]
     except ObjectDoesNotExist:
         leaders = []
